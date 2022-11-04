@@ -17,7 +17,7 @@ const neoToken = await NeoToken.deployed()
   console.log(" Intermediary deployed: ", intermediary.address)
 
   // Transfer all tokens to DecentralBank (1 million)
-  await neoToken.transfer(Intermediary.address, '1000000000000000000000000')
+  await neoToken.transfer(intermediary.address, '1000000000000000000000000')
   console.log(intermediary.address)
 
   // Transfer 100 Mock Tether tokens to investor

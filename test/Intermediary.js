@@ -48,8 +48,8 @@ contract('Intermediary', ([owner, customer]) => {
         })
 
         it('contract has tokens', async () => {
-            let balance = await neoToken.balanceOf(Intermediary.address)
-            assert.equal(balance, tokens('0'))
+            let balance = await neoToken.balanceOf(intermediary.address)
+            assert.equal(balance.toString(), '1000000000000000000000000')
         })
         describe('Yield Farming', async () => {
             it('rewards tokens for staking', async () => {
