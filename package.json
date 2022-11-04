@@ -1,0 +1,22 @@
+{
+  "name": "project_solidity_with_openzeppiling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@babel/register": "^7.18.9",
+    "@openzeppelin/contracts": "^4.7.3",
+    "chai": "^4.3.6"
+  },
+  "devDependencies": {
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.1.0",
+    "mocha": "^10.1.0"
+  }
+}
