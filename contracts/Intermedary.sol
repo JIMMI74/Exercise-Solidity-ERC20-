@@ -6,6 +6,7 @@ import "./USDTJ.sol";
 contract Intermediary {
     string public name = "Intermediary";
     address public owner;
+
     NeoToken public neoToken;
     USDTJ public usdtj;
 
@@ -22,41 +23,49 @@ contract Intermediary {
         owner = msg.sender;
     }
 
-    function depositToken(uint256 _amount) public {
-        if (_amount > 0) {
-            usdtj.transferFrom(msg.sender, address(this), _amount);
-            //put to stake
-            depositStakingBalance[msg.sender] += _amount;
-        } else {
-            require(_amount > 0, "The amount must be more than zero");
-        }
+    function stake(uint256 _amount) public {
+        require(_amount > 0, "The amount must be more than zero");
+        require(
+            usdtj.balanceOf(msg.sender) >= _amount,
+            "You don't have enough tokens"
+        );
+
+        usdtj.transferFrom(msg.sender, address(this), _amount);
+        depositStakingBalance[msg.sender] += _amount;
+
         if (!staked[msg.sender]) {
             investors.push(msg.sender);
-            // update stack balance
         }
-        {
-            isStaking[msg.sender] = true;
-            staked[msg.sender] = true;
-        }
+
+        isStaking[msg.sender] = true;
+        staked[msg.sender] = true;
     }
 
-    // transfer and reward
-    function tokenRewards() public {
-        require(msg.sender == owner, "call only owner"); // must to be oly owner
-        for (uint256 i = 0; i < investors.length; i++) {
-            address drawer = investors[i]; // track address investors
-            uint256 balance = depositStakingBalance[drawer] / 10; // reward  10%
-            if (balance > 0) {
-                neoToken.transfer(drawer, balance); // transfer token  //
-            }
-        }
+    function claim() public {
+        require(isStaking[msg.sender] == true, "You are not staking");
+        require(
+            depositStakingBalance[msg.sender] > 0,
+            "You don't have any tokens"
+        );
+
+        uint256 userReward = depositStakingBalance[msg.sender] / 10 ; // reward  10%
+
+        require(userReward > 0, "The amount must be more than zero");
+        require(
+            neoToken.balanceOf(address(this)) >= userReward,
+            "The amount must be more than zero"
+        );
+
+        neoToken.transfer(msg.sender, userReward);
     }
 
     // unstake tokens
-    function unstakeTokens() public {
+    function unstake() public {
         uint256 balance = depositStakingBalance[msg.sender];
         // require the amount to be greater than zero
         require(balance > 0, "staking balance cannot be less than zero");
+
+        claim();
 
         // transfer the tokens to the specified contract address from our bank
         usdtj.transfer(msg.sender, balance);

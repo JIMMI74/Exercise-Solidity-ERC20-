@@ -61,7 +61,7 @@ contract('Intermediary', ([owner, customer]) => {
 
                 // Check Staking For Customer of 100 tokens
                 await usdtj.approve(intermediary.address, tokens('100'), { from: customer })
-                await intermediary.depositToken(tokens('100'), { from: customer })
+                await intermediary.stake(tokens('100'), { from: customer })
                 // Check Updated Balance of Customer
                 result = await usdtj.balanceOf(customer)
                 assert.equal(result.toString(), tokens('0'), 'customer mock wallet balance after staking 100 tokens')
@@ -70,7 +70,7 @@ contract('Intermediary', ([owner, customer]) => {
                 result = await usdtj.balanceOf(intermediary.address)
                 assert.equal(result.toString(), tokens('100'), 'intermediary  wallet balance after staking from customer')
 
-
+                
             })
         })
     })
