@@ -3,18 +3,16 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-
 contract USDTJ is ERC20 {
-   address public  owner;
+    address public owner;
 
     constructor() ERC20("USDTJ", "UDJ") {
         owner = msg.sender;
-        _mint(owner, 100000000 * 10 ** decimals());
-
+        _mint(owner, 100000000 * 10**decimals());
     }
 
-    modifier onlyOwner {
-        require(msg.sender ==owner, "Only the owner call function");
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner call function");
         _;
     }
 

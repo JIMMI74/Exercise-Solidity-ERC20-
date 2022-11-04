@@ -3,8 +3,8 @@ const USDTJ = artifacts.require('USDTJ')
 const Intermediary = artifacts.require('Intermediary')
 
 require('chai')
-.use(require('chai-as-promised'))
-.should()
+    .use(require('chai-as-promised'))
+    .should()
 
 contract('Intermediary', ([owner, customer]) => {
     let neoToken, usdtj, intermediary
@@ -23,7 +23,7 @@ contract('Intermediary', ([owner, customer]) => {
         await neoToken.transfer(intermediary.address, tokens('1000000'))
 
         // Transfer 100 mock Tethers to Customer
-        await usdtj.transfer(customer, tokens('100'), {from: owner})
+        await usdtj.transfer(customer, tokens('100'), { from: owner })
     })
 
 
@@ -51,29 +51,29 @@ contract('Intermediary', ([owner, customer]) => {
             let balance = await neoToken.balanceOf(Intermediary.address)
             assert.equal(balance, tokens('0'))
         })
-    describe('Yield Farming', async () => {
-        it('rewards tokens for staking', async () => {
-            let result
+        describe('Yield Farming', async () => {
+            it('rewards tokens for staking', async () => {
+                let result
 
-            // Check Investor Balance
-            result = await usdtj.balanceOf(customer)
-            assert.equal(result.toString(), tokens('100'), 'customer mock wallet balance before staking')
+                // Check Investor Balance
+                result = await usdtj.balanceOf(customer)
+                assert.equal(result.toString(), tokens('100'), 'customer mock wallet balance before staking')
 
-            // Check Staking For Customer of 100 tokens
-            await usdtj.approve(intermediary.address, tokens('100'), {from: customer})
-            await intermediary.depositToken(tokens('100'), {from: customer})
-            // Check Updated Balance of Customer
-            result = await usdtj.balanceOf(customer)
-            assert.equal(result.toString(), tokens('0'), 'customer mock wallet balance after staking 100 tokens')
+                // Check Staking For Customer of 100 tokens
+                await usdtj.approve(intermediary.address, tokens('100'), { from: customer })
+                await intermediary.depositToken(tokens('100'), { from: customer })
+                // Check Updated Balance of Customer
+                result = await usdtj.balanceOf(customer)
+                assert.equal(result.toString(), tokens('0'), 'customer mock wallet balance after staking 100 tokens')
 
-            // Check Updated Balance
-            result = await usdtj.balanceOf(intermediary.address)
-            assert.equal(result.toString(), tokens('100'), 'intermediary  wallet balance after staking from customer')
+                // Check Updated Balance
+                result = await usdtj.balanceOf(intermediary.address)
+                assert.equal(result.toString(), tokens('100'), 'intermediary  wallet balance after staking from customer')
 
 
+            })
         })
     })
-   })
 })
 
 
