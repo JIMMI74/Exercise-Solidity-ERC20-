@@ -19,10 +19,10 @@ contract('Intermediary', ([owner, customer]) => {
         neoToken = await NeoToken.new()
         intermediary = await Intermediary.new(neoToken.address, usdtj.address)
 
-        // Transfer all tokens to DecentralBank (1 million)
+        // Transfer all tokens to Intermediary (1 million)
         await neoToken.transfer(intermediary.address, tokens('1000000'))
 
-        // Transfer 100 mock Tethers to Customer
+        // Transfer 100 mock USDTJ to Customer
         await usdtj.transfer(customer, tokens('100'), { from: owner })
     })
 
